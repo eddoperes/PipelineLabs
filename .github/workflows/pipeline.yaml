@@ -22,7 +22,7 @@ jobs:
           echo " -- Estrutura .github\workflows -- "
           ls -la .github\workflows
           echo ""
-          echo " Total de workflows: $(ls -l .github\workflows | wc -l) "
+          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
 
       - name: Elementos obrigatórios do workflow
         run: |
