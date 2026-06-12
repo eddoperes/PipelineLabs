@@ -17,10 +17,10 @@ jobs:
       - name: Checkout do Codigo
         uses: actions/checkout@v4
 
-      - name: Mostrar estrutura .github\workflows
+      - name: Mostrar estrutura .github/workflows
         run: |
-          echo " -- Estrutura .github\workflows -- "
-          ls -la .github\workflows
+          echo " -- Estrutura .github/workflows -- "
+          ls -la .github/workflows
           echo ""
           echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
 
