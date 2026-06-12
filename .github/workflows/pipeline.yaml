@@ -1,6 +1,6 @@
 name: "Estrutura de Diretórios e Arquivos"
 
-001:
+00:
   push:
     branches: [main]
   workflow_dispatch:
