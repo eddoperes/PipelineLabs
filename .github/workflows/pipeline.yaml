@@ -26,11 +26,11 @@ jobs:
           echo " Data atual $(date) "
           echo " Usuario $(whoami) "
         
-     - name: Listar arquivos do repositorio
-       run: ls -la
+      - name: Listar arquivos do repositorio
+        run: ls -la
        
-     - name: Comandos multiplos
-       run: |
+      - name: Comandos multiplos
+        run: |
          echo "Primeiro comando"
          echo "Segundo comando"
          echo "Terceiro comando"
