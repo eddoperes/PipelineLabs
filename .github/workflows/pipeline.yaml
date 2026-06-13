@@ -1,15 +1,14 @@
-name: "Estrutura de Diretórios e Arquivos"
+name: "Hello Github Actions"
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]    
   workflow_dispatch:
     
-env:
-  NODE_VERSION: '18'
-
 jobs:
-  demonstrando-estrutura:
+  hello-job:
     name: "Demonstrar Estrutura Basica"
     runs-on: ubuntu-latest
     
@@ -17,23 +16,21 @@ jobs:
       - name: Checkout do Codigo
         uses: actions/checkout@v4
 
-      - name: Mostrar estrutura .github/workflows
-        run: |
-          echo " -- Estrutura .github/workflows -- "
-          ls -la .github/workflows
-          echo ""
-          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
+      - name: Executar hello world
+        run: echo "Hello, Github Actions!"
 
-      - name: Elementos obrigatórios do workflow
+      - name: Mostrar Informacoes do Sistema
         run: |
-          echo " -- Elementos obrigatórios do workflow -- "
-          echo " name: Nome do workflow "
-          echo " on: Eventos que disparam o workflow "
-          echo " jobs: Conjunto de tarefas a serem executadas "
+          echo " Sistema Operacional ${{runner.os}} "
+          echo " Diretorio atual $(pwd) "
+          echo " Data atual $(date) "
+          echo " Usuario $(whoami) "
         
-      - name: Variaveis e Contexto
-        run: |
-          echo " -- Variaveis e Contexto -- "
-          echo " Variaveis de ambiente: NODE_VERSION = $NODE_VERSION "
-          echo " Contexto: github, env, job, steps, runner, secrets, strategy, matrix, needs "
+     - name: Listar arquivos do repositorio
+       run: ls -la
        
+     - name: Comandos multiplos
+       run: |
+         echo "Primeiro comando"
+         echo "Segundo comando"
+         echo "Terceiro comando"
