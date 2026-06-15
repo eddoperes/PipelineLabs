@@ -1,0 +1,21 @@
+name: "Cronometro"
+
+on:
+  schedule:
+    - cron: "55 00 * * *"
+  workflow_dispatch:
+
+jobs:
+  scheduled-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Mostrar estrutura .github/workflows
+        run: |
+          echo " -- Estrutura .github/workflows -- "
+          ls -la .github/workflows
+          echo ""
+          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
+

@@ -1,0 +1,25 @@
+name: "Push and Path"
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/**'
+      - 'README.MD'
+
+jobs:
+  push-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Mostrar estrutura .github/workflows
+        run: |
+          echo " -- Estrutura .github/workflows -- "
+          ls -la .github/workflows
+          echo ""
+          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
+
