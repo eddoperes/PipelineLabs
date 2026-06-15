@@ -20,7 +20,7 @@ jobs:
           echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}" 
 
       - name: Resposta automática (nova issue) 
-        if: githUb.event.action = 'opened' 
+        if: githUb.event.action == 'opened' 
         uses: actions/github-scriptov7  
         with: 
           script: |
