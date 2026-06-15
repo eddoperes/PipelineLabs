@@ -62,31 +62,31 @@ jobs:
   build: 
     runs-on: ubuntu-latest 
 
-  steps: 
-    - name: Checkout codigo 
-      uses: actions/checkout@v4 
+    steps: 
+      - name: Checkout codigo 
+        uses: actions/checkout@v4 
 
-    - name: Configurar ambiente de build 
-      run: | 
-        echo "Configurando ambiente de build..." 
-        sleep 4 
-        echo "Ambiente configurado" 
+      - name: Configurar ambiente de build 
+        run: | 
+          echo "Configurando ambiente de build..." 
+          sleep 4 
+          echo "Ambiente configurado" 
 
-    - name: Compiler oplicação
-      run: | 
-        echo "Compilando aplicacao..." 
-        sleep 5 
-        echo "Build concluido con sucesso" 
+      - name: Compiler oplicação
+        run: | 
+          echo "Compilando aplicacao..." 
+          sleep 5 
+          echo "Build concluido con sucesso" 
 
-    - name: Geror artefatos 
-      run: | 
-        echo "Gerando artefatos..." 
-        mkdir -p build 
-        echo "Aplicaclo compilada en $(date)" > build/app. 
-        echo "Artefatos gerados" 
+      - name: Geror artefatos 
+        run: | 
+          echo "Gerando artefatos..." 
+          mkdir -p build 
+          echo "Aplicaclo compilada en $(date)" > build/app. 
+          echo "Artefatos gerados" 
 
-    - name: Upload artefatos 
-      uses: actions/upload-artifact@v4 
-      with: 
-       name: build-artifacts 
-       path: build/ 
+      - name: Upload artefatos 
+        uses: actions/upload-artifact@v4 
+        with: 
+         name: build-artifacts 
+         path: build/ 
