@@ -21,7 +21,7 @@ jobs:
 
       - name: Resposta automática (nova issue) 
         if: githUb.event.action == 'opened' 
-        uses: actions/github-scriptov7  
+        uses: actions/github-script@v7  
         with: 
           script: |
             github.rest.issues.createComment({
