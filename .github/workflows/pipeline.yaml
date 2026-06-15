@@ -1,33 +1,92 @@
-name: "Issue"
+name: "Paralelo"
 
-on:   
-  issues: 
-    types: [opened, edited, closed, labeled]
+on: 
+  push: 
+    branches: [ main ] 
+  workflow_dispatch: 
 
 jobs: 
-  issue-job: 
-    permissions: write-all
+  #job 1 analise de código 
+  code-analysis: 
     runs-on: ubuntu-latest 
 
     steps: 
-      - name: Informações da Issue 
-    
-        run: |
-          echo "Workflow disparado por ISSUE" 
-          echo "Ação: ${{ github.event.action }}" 
-          echo "Issue ${{ github.event.issue.number }}"
-          echo "Título: ${{ github.event.issue.title }}" 
-          echo "Autor: ${{ github.event.issue.user.login }}" 
-          echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}" 
+    - name: Checkout cddigo 
+      uses: actlons/checkout@v4 
 
-      - name: Resposta automática (nova issue) 
-        if: githUb.event.action == 'opened' 
-        uses: actions/github-script@v7  
-        with: 
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Obrigado por reportar esta issue! Nossa equipe irá analisar em breve.'
-            })  
+    - name: Analise de sintaxe
+      run: |
+        echo "Analisando sintaxe do codigo..." 
+        sleep 3 
+        echo "Analise de sintaxe concluida" 
+
+    - name: Verificar padres de codigo 
+      run: | 
+        echo "Verificando padrões de codigo..." 
+        sleep 2 
+        echo "Padrões verificados" 
+
+    - name: Upload relatorio de analise 
+      run: | 
+        echo "Fazendo upload do relatorio..." 
+        echo "Relatorio de analise gerado en $(date)" > analysis_report.txt
+        echo "Relatorio salvo" 
+
+  # Job 2: Testes unitoriOO (execute en poralelo cam cod 
+  unit-tests:     
+    runs-on: ubuntu-latest 
+
+    steps: 
+      - name: Checkout E6d.1ult 
+        uses: actions/checkout@v4
+
+      - name: Configurar ambience de testes 
+        run: | 
+          echo "Configurando ambience de testes..." 
+          sleep 2 
+          echo "Anbiente configuredo" 
+
+      - name: Executor testes unitarios 
+        run: | 
+          echo "Executando testes unitarios..." 
+          sleep 4 
+          echo "Todos os testes passaran (15/15)" 
+
+      - name: Gerar relatorio de cobertura 
+        run: | 
+          echo "Gerando retatoria de cobertura..." 
+          sleep 1 
+          echo "Cobertura: 854" 
+
+  # Job 3: Build da aplicactio (execute en a:wattle) 
+  build: 
+    runs-on: ubuntu-latest 
+
+  steps: 
+    - name: Checkout codigo 
+      uses: actions/checkout@v4 
+
+    - name: Configurar ambiente de build 
+      run: | 
+        echo "Configurando ambiente de build..." 
+        sleep 4 
+        echo "Ambiente configurado" 
+
+    - name: Compiler oplicação
+      run: | 
+        echo "Compilando aplicacao..." 
+        sleep 5 
+        echo "Build concluido con sucesso" 
+
+    - name: Geror artefatos 
+      run: | 
+        echo "Gerando artefatos..." 
+        mkdir -p build 
+        echo "Aplicaclo compilada en $(date)" > build/app. 
+        echo "Artefatos gerados" 
+
+    - name: Upload artefatos 
+      uses: actions/upload-artifact@v4 
+      with: 
+       name: build-artifacts 
+       path: build/ 
