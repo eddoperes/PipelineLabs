@@ -6,6 +6,7 @@ on:
 
 jobs: 
   issue-job: 
+    permissions: write-all
     runs-on: ubuntu-latest 
 
     steps: 
