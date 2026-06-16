@@ -13,7 +13,7 @@ jobs:
     strategy: 
       fail-fast: false # Não para se um job falhar 
       matrix: 
-        os: (ubuntu-latest, windows-latest, macos-latest) 
+        os: [ubuntu-latest, windows-latest, macos-latest] 
         node-version: [16, 18, 20] 
         include: 
           # Configuracões especificas 
