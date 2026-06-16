@@ -54,7 +54,7 @@ jobs:
     - name: Teste experimental 
       if: matrix.experimental == true 
       run: | 
-        echo "Executando testes experinentais..." 
+        echo "Executando testes experimentais..." 
         sleep 1 
         echo "Testes experimentais concluidos" 
 
