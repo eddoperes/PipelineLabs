@@ -47,7 +47,7 @@ jobs:
 
     - name: Executar testes especificos do OS    
       run: | 
-        echo "Executando testes no ${{ netrix.os }} com Node ${{ matrix.node-version }}..." 
+        echo "Executando testes no ${{ matrix.os }} com Node ${{ matrix.node-version }}..." 
         sleep 2 
         echo "Testes concluidos" 
 
