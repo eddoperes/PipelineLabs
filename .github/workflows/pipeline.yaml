@@ -3,7 +3,8 @@ on: push
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }
+
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -11,3 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Mostrar estrutura .github/workflows
+        run: |
+          echo " -- Estrutura .github/workflows -- "
+          ls -la .github/workflows
+          echo ""
+          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
