@@ -8,7 +8,7 @@ on:
 jobs:  
   # Job com matrix para multiplos ambientes 
   test-matrix: 
-    runs-on: $(( matrix.os }} 
+    runs-on: ubuntu-latest
 
     strategy: 
       fail-fast: false # Não para se um job falhar 
