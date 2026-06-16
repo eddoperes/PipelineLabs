@@ -16,8 +16,8 @@ jobs:
       uses: actions/checkout@v4 #
 
     - name: Mostrar estrutura .github/workflows
-        run: |
-          echo " -- Estrutura .github/workflows -- "
-          ls -la .github/workflows
-          echo ""
-          echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
+      run: |
+        echo " -- Estrutura .github/workflows -- "
+        ls -la .github/workflows
+        echo ""
+        echo " Total de workflows: $(ls -l .github/workflows | wc -l) "
