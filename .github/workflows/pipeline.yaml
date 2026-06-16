@@ -9,19 +9,21 @@ jobs:
   # Job com matrix para multiplos ambientes 
   test-matrix: 
     runs-on: $(( matrix.os }} 
+
     strategy: 
       fail-fast: false # Não para se um job falhar 
       matrix: 
         os: (ubuntu-latest, windows-latest, macos-latest) 
         node-version: [16, 18, 20] 
-        include:          
+        include: 
+          # Configuracões especificas 
           - os: ubuntu-latest 
-          node-version: 20 
-          experimental: true 
+            node-version: 20 
+            experimental: true 
         exclude: 
           # Excluir combinacões problemáticas 
-        - os: windows-latest 
-          node-version: 16 
+          - os: windows-latest 
+            node-version: 16 
 
     steps: 
     - name: Checkout codigo 
