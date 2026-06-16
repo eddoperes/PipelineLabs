@@ -14,8 +14,7 @@ jobs:
       matrix: 
         os: (ubuntu-latest, windows-latest, macos-latest) 
         node-version: [16, 18, 20] 
-        include: 
-          # Configuracões especificas 
+        include: # Configuracões especificas           
           - os: ubuntu-latest 
           node-version: 20 
           experimental: true 
