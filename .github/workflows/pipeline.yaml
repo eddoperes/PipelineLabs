@@ -19,11 +19,11 @@ on:
         required: false 
         default: 'none' 
         type: choice 
-          options: 
-          - none 
-          - development 
-          - staging 
-          - production 
+        options: 
+        - none 
+        - development 
+        - staging 
+        - production 
 
 jobs: 
   conditional-steps: 
