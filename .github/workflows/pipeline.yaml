@@ -1,5 +1,7 @@
 name: Multi-Environment Test
-on: push
+on: 
+  push:
+    branches: [ main ]
 
 jobs:
   test:
