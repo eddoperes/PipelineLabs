@@ -46,7 +46,7 @@ jobs:
         echo "Commit: ${{ github.sha }}" 
 
     - name: Step apenas em PR 
-      if: github.event_name == pull_request' 
+      if: github.event_name == 'pull_request' 
       run: |
         echo "Este step execute apenas em PULL REQUEST" 
         echo "PR ${{ github.event.nunber }}"
