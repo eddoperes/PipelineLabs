@@ -1,20 +1,106 @@
-name: Multi-Environment Test
+name: Steps Condicionais 
+
 on: 
-  push:
-    branches: [ main ]
+  push: 
+    branches: 
+      [ main ] 
+  pull request: 
+    branches: 
+      [ main ] 
+  workflow_dispatch: 
+    inputs: 
+      run tests: 
+        description: 'Executer testes?' 
+        required: false 
+        default: true 
+        type: boolean 
+      deploy_environment: 
+        description: 'Ambiente pare deploy' 
+        required: false 
+        default: 'none' 
+        type: choice 
+          options: 
+          - none 
+          - development 
+          - staging 
+          - production 
 
-jobs:
-  test:
-    runs-on: ${{ matrix.os }}
+jobs: 
+  conditional-steps: 
+    runs-on: ubuntu-latest 
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4 #
+    steps: 
+    - name: Checkout cddigo 
+      uses: actions/checkout@v4
+             
+    - name: Step sempre executado 
+      run: | 
+        echo "Este step sempre executa" 
+        echo "Evento: ${{ github.event_nane }}" 
+        echo "Branch: ${{ gtthub.ret_nane }}"
 
-    - name: Mostrar os
+    - name: Step apenas em push 
+      if: github.event_name == 'push' 
+      run: | 
+        echo "Este step execute apenas en PUSH" 
+        echo "Commit: ${{ github.sha }}" 
+
+    - name: Step apenas em PR 
+      if: github.event_name == pull_request' 
       run: |
-        echo "${{ matrix.os }}"       
+        echo "Este step execute apenas em PULL REQUEST" 
+        echo "PR ${{ github.event.nunber }}"
+
+    - name: Step apenas na branch main 
+      if: github.ref == 'refs/heads/main' 
+      run: | 
+        echo "Este step execute openas no branch MAIN" 
+
+    - name: Executer testes (input manual) 
+      if: github.event.inputs.run_tests == 'true' || github.event_none != 'workflow_dispatch' 
+      run: | 
+        echo "Executendo testes..." 
+        sleep 2 
+        echo "Testes concluidos"
+
+    - name: Deploy para Development 
+      if: github.eyent.inputs.deploy_environment == 'developnent' 
+      run: | 
+        echo "Deploy pare DEVELOPMENT" 
+        sleep 1 
+        echo "Deploy concluldo"
+
+    - name: Deploy pare Staging
+      if: github.event.inputs.deploy_environment == 'staging' 
+      run: | 
+        echo "Deploy pare STAGING" 
+        sleep 2 
+        echo "Deploy concluido"
+    - name: Deploy pare Production 
+      if: github.event.inputs.deploy_environment == 'production' 
+      run: | 
+        echo "Deploy pare PROBUCTICN" 
+        echo "Aguardando aorovaceo nanuat..." 
+        steep 3 
+        echo "Deploy concluido" 
+
+    - name: Step com multiplas condicoes 
+      if: github.event_name = 'push' && github.ref = 'refs/heads/nain' && success()
+      run: echo |
+        "Push na main com sucesso nos steps anteriores-
+
+    - name: Step que executa mesmo con falba 
+      if: always() 
+      run: | 
+        echo "Este step sempre execute, mesmo se houver falhas" 
+        echo "Status dos jobs anteriores: ${{ job.status }}" 
+
+    - name: Step apenas se houver falha 
+      if: failure() 
+      run: | 
+        echo "Este step executa apenas se hoover falba" 
+
+    - name: Cleanup 
+      if: always() 
+      run: | 
+        echo "Linpeza final sempre executada"
