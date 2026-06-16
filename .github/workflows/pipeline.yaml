@@ -37,7 +37,7 @@ jobs:
       run: | 
         echo "Este step sempre executa" 
         echo "Evento: ${{ github.event_nane }}" 
-        echo "Branch: ${{ gtthub.ret_nane }}"
+        echo "Branch: ${{ github.ret_nane }}"
 
     - name: Step apenas em push 
       if: github.event_name == 'push' 
