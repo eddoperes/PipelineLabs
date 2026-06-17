@@ -33,7 +33,7 @@ jobs:
         run: | 
           echo = "Variaveis do Job ===" 
           echo "Variavel JOB_VAR: ${{ env.JOB_VAR }}" 
-          echo "Usuario: $(( env.USUARIO }}" 
+          echo "Usuario: ${{ env.USUARIO }}" 
 
       - name: Exibir variant do step 
         env: 
@@ -42,7 +42,7 @@ jobs:
         run: | 
           echo "=== Variaveis do Step = "
           echo "VarOvel STEP_VAR: ${{ env.STEP_VAR }}" 
-          echo "Mensagem: ${( env.MENSAGEM )}" 
+          echo "Mensagem: ${{ env.MENSAGEM }}" 
 
       - name: Conbinar variaveis de diferentes ntveis 
         env: 
