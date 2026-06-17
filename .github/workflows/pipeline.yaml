@@ -53,7 +53,7 @@ jobs:
     - name: Vorificer seguranca dos secrets 
       run: | 
        echo "Segurance dos Secrets:" 
-       echo "- Secrets nonce aparecen ea logs Back substituidos por *ter 
+       echo "- Secrets nonce aparecen ea logs Back substituidos por ***" 
        echo "- Secrets n3o sae acessiveis an forks do repositorio" 
        echo "- Secrets sd sAo expostos pare workflows notarization" 
        echo "- Voce pode atualizar secrets sem alterar o Otto? "
