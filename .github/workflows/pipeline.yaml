@@ -33,12 +33,12 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }} 
         DB_PORT: ${{ secrets.DB_PORT }} 
       run: | 
-        echo "Configurando conexao con banco de dodos...- 
+        echo "Configurando conexao con banco de dodos..." 
         echo "Host: $DB_HOST" 
         echo "Porte: $DB_PORT" 
         echo "Usuirio: $DB_USERNAME" 
         echo "Senha: $DB_PASSWORD" 
-        echo "Observe que a senha sera mascarada nos logs!' 
+        echo "Observe que a senha sera mascarada nos logs!"
  
     # Step a: User secret en un token de deploy 
     - name: Preparar deploy con token 
@@ -56,4 +56,4 @@ jobs:
        echo "- Secrets nonce aparecen ea logs Back substituidos por *ter 
        echo "- Secrets n3o sae acessiveis an forks do repositorio" 
        echo "- Secrets sd sAo expostos pare workflows notarization" 
-       echo "- Voce pode atualizar secrets sem alterar o Otto? 
+       echo "- Voce pode atualizar secrets sem alterar o Otto? "
