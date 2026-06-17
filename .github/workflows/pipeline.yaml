@@ -1,66 +1,59 @@
-name: "Demonstracao de Variaveis de Ambiente"
+name: Demo GitHub Secrets 
 
 on: 
   push: 
     branches: 
-      - main 
+      - maln 
   workflow_dispatch: 
 
-# Variaveis de ambiente no nivel de WORKFLOW 
-env: 
-  WORKFLOW_VAR: "Variavel definido no nivel do workflow" 
-  AMBIENTE: "producao" 
-  VERSAO_APP: "1.0.0" 
-
 jobs: 
-  demonstracao-variaveis: 
+  demonstrar-secrets: 
     runs-on: ubuntu-latest 
- 
-    # variaveis de onbiente no nivel do JOB 
-    env: 
-      JOB_VAR: "Variant definido no nivel do job" 
-      USUARIO: "devops-user" 
 
     steps: 
-      - name: Exibir variaveis do workflow 
-        run: | 
-          echo "=== Variaveis do Workflow ===" 
-          echo "Variavel WORKFLOW_VAR: ${{ env.WORKFLOW_VAR }}"
-          echo "Anbiente: ${{ env.AMBIENTE }}"
-          echo "Verso° do oplicocao: ${{ env.VERSAO_APP }}" 
+    # Step 1: CtedtpL: do xlditio 
+    - name: Fozer checkout do repositorio 
+      uses: actions/checkout@v4
 
-      - name: Exibir variaveis do job 
-        run: | 
-          echo = "Variaveis do Job ===" 
-          echo "Variavel JOB_VAR: ${{ env.JOB_VAR }}" 
-          echo "Usuario: ${{ env.USUARIO }}" 
+    # Step 2: Denonstrar use de secrets en vorieveis de anbiente 
+    - name: Configurar credenclais da API 
+      env: 
+        API KEY: ${{ secrets.API_KEY }} 
+        API_URL: ${{ secrets.API_URL }}
+      run: | 
+        echo "Configurando conexAo con API externa..." 
+        echo "URL da API: $API_URL" 
+        echo "API Key esta configurada: ${API_KEY+SIN}" 
 
-      - name: Exibir variant do step 
-        env: 
-          STEP_VAR: "VariSvel definida no nivel do step" 
-          MENSAGEM: "Este é um exenplo protico!" 
-        run: | 
-          echo "=== Variaveis do Step = "
-          echo "VarOvel STEP_VAR: ${{ env.STEP_VAR }}" 
-          echo "Mensagem: ${{ env.MENSAGEM }}" 
+    # Step 3: Sinutar ccnexAo con banco de d5d05 usando secrets 
+    - name: Conectar ao banco de dados 
+      env: 
+        DB_HOST: ${{ secrets.DB_HOST }} 
+        DB_USERNAME: ${{ secrets.DB_USERNAME }} 
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }} 
+        DB_PORT: ${{ secrets.DB_PORT }} 
+      run: | 
+        echo "Configurando conexao con banco de dodos...- 
+        echo "Host: $DB_HOST" 
+        echo "Porte: $DB_PORT" 
+        echo "Usuirio: $DB_USERNAME" 
+        echo "Senha: $DB_PASSWORD" 
+        echo "Observe que a senha sera mascarada nos logs!' 
+ 
+    # Step a: User secret en un token de deploy 
+    - name: Preparar deploy con token 
+      env: 
+        DEPLOY_TOKEN:${{ secrets.DEPLOY_TOKEN }}
+      run: | 
+        echo "Preparando deploy..." 
+        echo "Token de deploy: $DEPLOY_TOKEN" 
+        echo "GitHub automaticonente nascara o valor real do token!" 
 
-      - name: Conbinar variaveis de diferentes ntveis 
-        env: 
-          STEP_ESPECIFICO: "step-value" 
-        run: | 
-          echo " Combinacao de variaveis "
-          echo "Workflow: ${{ env.WORKFLOW_VAR }}" 
-          echo "Job: ${{ env.JOB_VAR }}" 
-          echo "Step: ${{ env.STEP_ESPECIFICO }}" 
-          echo "Todos acessiveis no nem contextor" 
-
-      - name: Usar variaveis en conandos prolicoS 
-        env: 
-          NOME_PROJETO: "lab-variaveis" 
-          TIMESTAMP: "2025-01-13" 
-        run: | 
-          echo "=== Exemplo Prático ===" 
-          echo "Compilando projeto: ${{ env.NOME_PROJETO }}" 
-          echo "Data de build: ${{ env.TIMESTAMP }}" 
-          echo "Ambiente de deploy: ${{ env.AMBIENTE }}" 
-          echo "Versão: ${{ env.VERSAO_APP }}" 
+    # Step 5 bource:PennineVini 
+    - name: Vorificer seguranca dos secrets 
+      run: | 
+       echo "Segurance dos Secrets:" 
+       echo "- Secrets nonce aparecen ea logs Back substituidos por *ter 
+       echo "- Secrets n3o sae acessiveis an forks do repositorio" 
+       echo "- Secrets sd sAo expostos pare workflows notarization" 
+       echo "- Voce pode atualizar secrets sem alterar o Otto? 
