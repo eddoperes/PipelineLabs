@@ -24,8 +24,8 @@ jobs:
     steps: 
       - name: Exibir variaveis do workflow 
         run: | 
-          echo "=== Variaveis do Workflow ==" 
-          echo "Variavel WORKFLOW_VAR: $(( env.WORKFLOW_VAR }}"
+          echo "=== Variaveis do Workflow ===" 
+          echo "Variavel WORKFLOW_VAR: ${{ env.WORKFLOW_VAR }}"
           echo "Anbiente: ${{ env.AMBIENTE }}"
           echo "Verso° do oplicocao: ${{ env.VERSAO_APP }}" 
 
