@@ -3,7 +3,7 @@ name: Demo GitHub Secrets
 on: 
   push: 
     branches: 
-      - maln 
+      - main 
   workflow_dispatch: 
 
 jobs: 
