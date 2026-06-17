@@ -13,7 +13,7 @@ env:
   VERSAO_APP: "1.0.0" 
 
 jobs: 
-  denonstracao-variaveis: 
+  demonstracao-variaveis: 
   runs-on: ubuntu-latest 
  
   # variaveis de onbiente no nivel do JOB 
