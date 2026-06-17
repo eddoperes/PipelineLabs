@@ -31,7 +31,7 @@ jobs:
 
       - name: Exibir variaveis do job 
         run: | 
-          echo = Variaveis do Job ===" 
+          echo = "Variaveis do Job ===" 
           echo "Variavel JOB_VAR: ${{ env.JOB_VAR }}" 
           echo "Usuario: $(( env.USUARIO }}" 
 
