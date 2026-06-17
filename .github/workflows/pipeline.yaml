@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest 
 
     steps: 
-    # Step 1: CtedtpL: do xlditio 
+    # Step 1: Checkout de codigo 
     - name: Fozer checkout do repositorio 
       uses: actions/checkout@v4
 
