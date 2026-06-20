@@ -1,59 +1,94 @@
-name: Demo GitHub Secrets 
+name: Deploy Multi-Ambiente 
 
 on: 
-  push: 
-    branches: 
-      - main 
-  workflow_dispatch: 
+  workflow_dispatch: # Permite execucao manual para testar cada ambiente 
 
 jobs: 
-  demonstrar-secrets: 
-    runs-on: ubuntu-latest 
-
+  # Job 1: Mostra as variaveis de repositorio compartilhadas
+  mostrar-variaveis-repositorio: 
+    runs-on: ubuntu-latest       
     steps: 
-    # Step 1: Checkout de codigo 
-    - name: Fozer checkout do repositorio 
-      uses: actions/checkout@v4
+      - name: Exibir variaveis de repositorio 
+        run: |
+          echo "=== VARIAVEIS DE REPOSITORID ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Regifici: ${{ vars.DEFAULT_REGION }}" 
+          echo "Tineout padrio: ${{ vars.DEFAULT_TIMEOUT }}" 
+          echo "VersAo do Node: ${{ vars.NODE_VERSION }}" 
 
-    # Step 2: Denonstrar use de secrets en vorieveis de anbiente 
-    - name: Configurar credenclais da API 
-      env: 
-        API KEY: ${{ secrets.API_KEY }} 
-        API_URL: ${{ secrets.API_URL }}
-      run: | 
-        echo "Configurando conexAo con API externa..." 
-        echo "URL da API: $API_URL" 
-        echo "API Key esta configurada: ${API_KEY+SIN}" 
+  # Job 2: Deploy cm Desenvolvinento de
+  deploy-dev: 
+    runs-on: ubuntu-latest 
+    enviroment: dev # usa o environnent "dev" 
+    steps: 
+      - name: Configurar anbiente DEV
+        run: | 
+          echo "=== DEPLOY EM DESENVOLVIMENTO ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
 
-    # Step 3: Sinutar ccnexAo con banco de d5d05 usando secrets 
-    - name: Conectar ao banco de dados 
-      env: 
-        DB_HOST: ${{ secrets.DB_HOST }} 
-        DB_USERNAME: ${{ secrets.DB_USERNAME }} 
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }} 
-        DB_PORT: ${{ secrets.DB_PORT }} 
-      run: | 
-        echo "Configurando conexao con banco de dodos..." 
-        echo "Host: $DB_HOST" 
-        echo "Porte: $DB_PORT" 
-        echo "Usuirio: $DB_USERNAME" 
-        echo "Senha: $DB_PASSWORD" 
-        echo "Observe que a senha sera mascarada nos logs!"
- 
-    # Step 4: User secret en un token de deploy 
-    - name: Preparar deploy con token 
-      env: 
-        DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      run: | 
-        echo "Preparando deploy..." 
-        echo "Token de deploy: $DEPLOY_TOKEN" 
-        echo "GitHub automaticonente nascara o valor real do token!" 
+      - name: Sinular build Para DEV 
+        run: | 
+          echo "Compilendo aplicacao parts ${{ vars.ENVIRONMENT }}" 
+          echo "URL de destino: ${{ vars.API_URL }}" 
+          sleep 2 
+          echo "Build concluido para DEV" 
 
-    # Step 5 bource:PennineVini 
-    - name: Vorificer seguranca dos secrets 
-      run: | 
-       echo "Segurance dos Secrets:" 
-       echo "- Secrets nonce aparecen ea logs Back substituidos por ***" 
-       echo "- Secrets n3o sae acessiveis an forks do repositorio" 
-       echo "- Secrets sd sAo expostos pare workflows notarization" 
-       echo "- Voce pode atualizar secrets sem alterar o Otto? "
+  # Job 3: Deploy en Staging 
+  deploy-staging: 
+    runs-on: ubuntu-latest 
+    environment: staging # A usa 0 environnent "staging"  
+    needs: deploy-dev # S6 execute apes deploy-dev 
+    steps: 
+      - name: Configurar anbiente STAGING 
+        run: | 
+          echo "=== DEPLOY EM STAGING ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+
+      - name: Simular testes de integracao 
+        run: | 
+          echo "Executando testes em  ${{ vars.ENVIRONMENT }} " 
+          echo "Endpoint ${{ vars.API_URL }}" 
+          sleep 2 
+          echo 'Testes aprovados em STAGING" 
+    
+  # Job 4: Deploy cm Producio 
+  deploy-production: 
+    runs-on: ubuntu-latest 
+    environment: production # Usa o environment "production" 
+    needs: deploy-staging # So executa apos deploy-staging      
+
+    steps:
+      - name: Configurar ambiente PRODUCTION 
+        run: | 
+          echo "=== DEPLOY EM PRODUCAO ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+
+      - name: Deploy em production 
+        run: | 
+          echo "Realitando deploy em ${{ vars.ENVIRONMENT }}" 
+          echo "URL publica: ${{ vars.API_URL }}" 
+          sleep 3 
+          echo "Deploy em PRODUCAO concluido con sucesso!" 
+
+      - name: Notificar equipe 
+        run: | 
+          echo "Enviando notificacao de deploy para ${{ vars.API_URL }}" 
+          echo "Versao implantada: ${{ vars.APP_NAME }} em ${{ vars.ENVIRONMENT }}" 
