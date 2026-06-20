@@ -19,7 +19,7 @@ jobs:
   # Job 2: Deploy cm Desenvolvinento de
   deploy-dev: 
     runs-on: ubuntu-latest 
-    enviroment: dev # usa o environnent "dev" 
+    environment: dev # usa o environnent "dev" 
     steps: 
       - name: Configurar anbiente DEV
         run: | 
