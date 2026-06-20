@@ -12,11 +12,11 @@ jobs:
         run: |
           echo "=== VARIAVEIS DE REPOSITORID ===" 
           echo "Aplicacao: ${{ vars.APP_NAME }}" 
-          echo "Regifici: ${{ vars.DEFAULT_REGION }}" 
-          echo "Tineout padrio: ${{ vars.DEFAULT_TIMEOUT }}" 
-          echo "VersAo do Node: ${{ vars.NODE_VERSION }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Timeout padrao: ${{ vars.DEFAULT_TIMEOUT }}" 
+          echo "Versao do Node: ${{ vars.NODE_VERSION }}" 
 
-  # Job 2: Deploy cm Desenvolvinento de
+  # Job 2: Deploy em Desenvolvinento
   deploy-dev: 
     runs-on: ubuntu-latest 
     environment: dev # usa o environnent "dev" 
@@ -34,7 +34,7 @@ jobs:
 
       - name: Sinular build Para DEV 
         run: | 
-          echo "Compilendo aplicacao parts ${{ vars.ENVIRONMENT }}" 
+          echo "Compilando aplicacao para ${{ vars.ENVIRONMENT }}" 
           echo "URL de destino: ${{ vars.API_URL }}" 
           sleep 2 
           echo "Build concluido para DEV" 
@@ -86,7 +86,7 @@ jobs:
           echo "Realitando deploy em ${{ vars.ENVIRONMENT }}" 
           echo "URL publica: ${{ vars.API_URL }}" 
           sleep 3 
-          echo "Deploy em PRODUCAO concluido con sucesso!" 
+          echo "Deploy em PRODUCAO concluido com sucesso!" 
 
       - name: Notificar equipe 
         run: | 
