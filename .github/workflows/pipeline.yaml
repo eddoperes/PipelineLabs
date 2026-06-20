@@ -61,9 +61,9 @@ jobs:
           echo "Executando testes em  ${{ vars.ENVIRONMENT }} " 
           echo "Endpoint ${{ vars.API_URL }}" 
           sleep 2 
-          echo 'Testes aprovados em STAGING" 
+          echo "Testes aprovados em STAGING" 
     
-  # Job 4: Deploy cm Producio 
+  # Job 4: Deploy em Producao 
   deploy-production: 
     runs-on: ubuntu-latest 
     environment: production # Usa o environment "production" 
