@@ -110,7 +110,7 @@ jobs:
             echo "SHA: ${{ github.sha }}" 
           fi 
 
-  # Job 4: DenonNire context° JOB e verificagdo de Status •
+  # Job 4: DenonNire contexto JOB e verificacao de Status •
   verificar-status: 
     runs-on: ubuntu-latest
     needs: [info-contexto, outputs-entre-steps, expressoes-e-funcoes] 
