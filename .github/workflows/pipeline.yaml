@@ -139,7 +139,23 @@ jobs:
             echo "expressoes-e-funcoes: FALHOU" 
           fi 
 
-   
+      # Acao condicional baseada, no sucesso de todos os jobs 
+      - name: Notificar sucesso total 
+      if: | 
+        needs.info-contexto.result == 'success' && 
+        needs.outputs-entre-steps.result == 'success' && 
+        needs.expressoes-e-funcoes.result == 'success' 
+      run: echo "Todos os jobs executaran con SUCESSO!"
+
+      # Acao conditional se algum job falhou 
+      - name: Notificar falha 
+      if: | 
+        needs.info-contexto.result == 'failure' || 
+        needs.outputs-entre-steps.result == 'failure' || 
+        needs.expressoes-e-funcoes.result == 'failure' 
+      run: |
+        echo "Peto pesos um Job FALHOU!" 
+        echo "Verifique os logs acina pare vials detalhes." 
 
   # Job 5: Casa de use prance - Noncor ortcfatos dinomicanente 
   criar-artefato-dinamico: 
