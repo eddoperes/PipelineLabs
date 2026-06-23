@@ -1,11 +1,11 @@
 name: Contextos e Expressoes
 
 on: 
- push: 
-   branches: 
-     - main 
-     - develop 
-     - 'feature/**' 
+  push: 
+    branches: 
+      - main 
+      - develop 
+      - 'feature/**' 
   pull_request: 
   workflow dispatch: 
 
