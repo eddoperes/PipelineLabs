@@ -114,7 +114,7 @@ jobs:
   verificar-status: 
     runs-on: ubuntu-latest
     needs: [info-contexto, outputs-entre-steps, expressoes-e-funcoes] 
-    if: always() 
+    if: always() # Sempre execute, nesno se jobs anteriores falhen 
     steps: 
       - name: Verificar status dos Jobs anteriores 
         run: | 
