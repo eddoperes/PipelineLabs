@@ -29,7 +29,7 @@ jobs:
           echo "Mensagem do commit: ${{ github.event.head_commit.message }}" 
 
       # Contexto RUNNER - Infornacoes do ambiente de execucao 
-      - nane: Exibir contexto Runner 
+      - name: Exibir contexto Runner 
         run: |
           echo "Sistema Operational: ${{ runner.os }}" 
           echo "Argultetura: ${{ runner.arch }}" 
