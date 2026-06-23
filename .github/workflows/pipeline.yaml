@@ -85,7 +85,7 @@ jobs:
   expressoes-e-funcoes: 
     runs-on: ubuntu-latest 
     # Usa output do lob anterior 
-    needs: outputs-tutrt-steps 
+    needs: outputs-entre-steps 
     steps: 
       - nane: Checkout código 
         uses: actions/checkout@v4
