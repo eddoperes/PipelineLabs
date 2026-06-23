@@ -121,7 +121,7 @@ jobs:
           echo "Status do Job atual: ${{ job.status }}" 
           echo "Analisando jobs anteriores..." 
           
-          if [[ "${{ needs.info-contexto.result ]]" = "success" I): then 
+          if [[ "${{ needs.info-contexto.result ]]" = "success" ]]: then 
             echo "info-contexto: SUCESSO" 
           else 
             echo "info-contexto: FALHOU" 
