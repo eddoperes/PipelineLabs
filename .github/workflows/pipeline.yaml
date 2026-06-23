@@ -1,94 +1,184 @@
-name: Deploy Multi-Ambiente 
+name: Contextos e Expressoes
 
 on: 
-  workflow_dispatch: # Permite execucao manual para testar cada ambiente 
+ push: 
+   branches: 
+     - main 
+     - develop 
+     - 'feature/**' 
+  pull_request: 
+  workflow dispatch: 
 
 jobs: 
-  # Job 1: Mostra as variaveis de repositorio compartilhadas
-  mostrar-variaveis-repositorio: 
-    runs-on: ubuntu-latest       
+  # Job 1: Denonstravontextos github e runner 
+  info-contexto: 
+    runs-on: ubuntu-latest 
     steps: 
-      - name: Exibir variaveis de repositorio 
+      - nane: Checkout codigo 
+        uses: actions/checkout@v4 
+
+      # Contexto GITHUB - Infornacoes do repositarto e evento 
+      - name: Exibir contexto GitHub 
         run: |
-          echo "=== VARIAVEIS DE REPOSITORID ===" 
-          echo "Aplicacao: ${{ vars.APP_NAME }}" 
-          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
-          echo "Timeout padrao: ${{ vars.DEFAULT_TIMEOUT }}" 
-          echo "Versao do Node: ${{ vars.NODE_VERSION }}" 
+          echo "Reposltdrio: ${{ github.repository }}" 
+          echo "Ator que disparou: ${{ github.actor }}" 
+          echo "Branch/Ref: ${{ github.ref }}" 
+          echo "Nome do branch: ${{ github.ref_name }}" 
+          echo "Evento: ${{ github.event_name }}" 
+          echo "SHA do commit: ${{ github.sha }}" 
+          echo "Mensagem do commit: ${{ github.event.head_commit.message }}" 
 
-  # Job 2: Deploy em Desenvolvinento
-  deploy-dev: 
+      # Contexto RUNNER - Infornacoes do ambiente de execucao 
+      - nane: Exibir contexto Runner 
+        run: |
+          echo "Sistema Operational: ${{ runner.os }}" 
+          echo "Argultetura: ${{ runner.arch }}" 
+          echo "Nome do runner: ${{ runner.name }}" 
+          echo "Diretbrio tenporerio: ${{ runner.temp }}" 
+          echo "Diretorio de ferranentas: ${{ runner.tool_cache }}" 
+
+      # Dunp coupleto dos contextos para debug 
+      - name: Debug - Dump contexto Github completo 
+        run: echo '${{ toJSON(github) }}' 
+
+      - name: Debug - Dump contexto Runner completo 
+        run: echo '${{ toJSON(runner) }}' 
+
+  # Job 2: Demonstra outputs de steps e referencias entre steps 
+  outputs-entre-steps: 
     runs-on: ubuntu-latest 
-    environment: dev # usa o environnent "dev" 
+    outputs: 
+      version: ${{ steps.gerar-versao.outputs.version }} 
+      env_name: ${{ steps.definir-ambiente.outputs.env_name }} 
     steps: 
-      - name: Configurar anbiente DEV
-        run: | 
-          echo "=== DEPLOY EM DESENVOLVIMENTO ===" 
-          echo "Aplicacao: ${{ vars.APP_NAME }}" 
-          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
-          echo "API URL: ${{ vars.API_URL }}" 
-          echo "Database: ${{ vars.DATABASE_NAME }}" 
-          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
-          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
-          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+      - name: Checkout código 
+        uses: actions/checkout@v4 
 
-      - name: Sinular build Para DEV 
+      - name: Gerar versão 
+        id: gerar-versao 
         run: | 
-          echo "Compilando aplicacao para ${{ vars.ENVIRONMENT }}" 
-          echo "URL de destino: ${{ vars.API_URL }}" 
-          sleep 2 
-          echo "Build concluido para DEV" 
+          VERSION="1.0.${{ github.run_number }}" 
+          echo "version=$VERSION" >> $GITHUB_OUTPUT 
+          echo "Versão gerada: $VERSION" 
 
-  # Job 3: Deploy en Staging 
-  deploy-staging: 
+      - name: Definir ambiente baseado no branch 
+        id: definir-ambiente 
+        run: | 
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then 
+            ENV_NAME="production" 
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then 
+            ENV_NAME="staging" 
+          else 
+            ENV_NAME="development" 
+          fi 
+          echo "env_name=$ENV_NAME" >> $GITHUB_OUTPUT 
+          echo "Ambiente definido: $ENV_NAME" 
+            
+      # Step que USA area de steps anteriores 
+      - name: User outputs dos steps anteriores 
+        run: | 
+          echo "Versão: ${{ steps.gerar-versao.outputs.version }}" 
+          echo "Ambiente: ${{ steps.definir-ambiente.outputs.env_name }}" 
+          echo "Tag completa: ${{ steps.definir-ambiente.outputs.env_name }}-v${{ steps.gerar-versao.outputs.version }}" 
+
+  # Job 3: Denonstra expressoes e funceies 
+  expressoes-e-funcoes: 
     runs-on: ubuntu-latest 
-    environment: staging # A usa 0 environnent "staging"  
-    needs: deploy-dev # S6 execute apes deploy-dev 
+    # Usa output do lob anterior 
+    needs: outputs-tutrt-steps 
     steps: 
-      - name: Configurar anbiente STAGING 
-        run: | 
-          echo "=== DEPLOY EM STAGING ===" 
-          echo "Aplicacao: ${{ vars.APP_NAME }}" 
-          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
-          echo "API URL: ${{ vars.API_URL }}" 
-          echo "Database: ${{ vars.DATABASE_NAME }}" 
-          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
-          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
-          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+      - nane: Checkout código 
+        uses: actions/checkout@v4
 
-      - name: Simular testes de integracao 
+      # Funcao contains() — Verifica se string contem texto 
+      - name: Verificar se é hotfix 
+        if: contains(github.ref, 'hotfix') 
+        run: echo "Este e um branch de HOTFTX - processo ccorriml otivixio!" 
+
+      # Funcao startsWith() — Verifica inicio da string 
+      - name: Verificar se é branch de feature 
+        if: startsWith(github.ref, 'refs/heads/feature/') 
+        run: echo "Branch de feature detectado: ${{ github.ref_name }}" 
+
+      # Funcao endsWith() — Verifica final da string 
+      - name: Verificar se commit ternino com numero 
         run: | 
-          echo "Executando testes em  ${{ vars.ENVIRONMENT }} " 
-          echo "Endpoint ${{ vars.API_URL }}" 
-          sleep 2 
-          echo "Testes aprovados em STAGING" 
-    
-  # Job 4: Deploy em Producao 
-  deploy-production: 
+          if [[ "${{ endsWith(github.sha, '0') }}" == "true" ]]; then 
+            echo "SHA termina con zero!" 
+          else 
+            echo "SHA: ${{ github.sha }}" 
+          fi 
+
+  # Job 4: DenonNire context° JOB e verificagdo de Status •
+  verificar-status: 
+    runs-on: ubuntu-latest
+    needs: [info-contexto, outputs-entre-steps, expressoes-e-funcoes] 
+    if: always() # Sempre execute, nesno se jobs anteriores falhen 
+    steps: 
+      - name: Verificar status dos Jobs anteriores 
+        run: | 
+          echo "Status do Job atual: ${{ job.status }}" 
+          echo "Analisando jobs anteriores..." 
+          
+          if [[ "${{ needs.info-contexto.result ]]" = "success" I): then 
+            echo "info-contexto: SUCESSO" 
+          else 
+            echo "info-contexto: FALHOU" 
+          fi 
+
+          if [[ "${{ needs.outputs-entre-steps.result }}" == "success" ]]; then 
+            echo "outputs-entre-steps: SUCESSO" 
+          else 
+            echo "outputs-entre-steps: FALHOU" 
+          fi 
+
+          if [[ "${{ needs.expressoes-e-funcoes.result }}" == "success" ]]; then 
+            echo "expressoes-e-funcoes: SUCESSO" 
+          else 
+            echo "expressoes-e-funcoes: FALHOU" 
+          fi 
+
+      # Acao condicional baseada, no sucesso de todos os jobs 
+      - name: Notificar sucesso total 
+      if: | 
+        needs.info-contexto.result == 'success' && 
+        needs.outputs-entre-steps.result == 'success' && 
+        needs.expressoes-e-funcoes.result == 'success' 
+      run: echo "Todos os jobs executaran con SUCESSO!"
+
+      # AO° conditional se algum job falhou 
+      - name: Notificar falha 
+      if: | 
+        needs.info-contexto.result == 'failure' || 
+        needs.outputs-entre-steps.result == 'failure' || 
+        needs.expressoes-e-funcoes.result == 'failure' 
+      run: |
+        echo "Peto pesos um Job FALHOU!" 
+        echo "Verifique os logs acina pare vials detalhes." 
+
+  # Job 5: Casa de use prance - Noncor ortcfatos dinomicanente 
+  criar-artefato-dinamico: 
     runs-on: ubuntu-latest 
-    environment: production # Usa o environment "production" 
-    needs: deploy-staging # So executa apos deploy-staging      
+    needs: outputs-entre-steps 
+    steps: 
+      - nane: Checkout cddigo 
+        uses: actions/checkout@v4 
 
-    steps:
-      - name: Configurar ambiente PRODUCTION 
+      - name: Crier arguivo de build &fouled° 
         run: | 
-          echo "=== DEPLOY EM PRODUCAO ===" 
-          echo "Aplicacao: ${{ vars.APP_NAME }}" 
-          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
-          echo "API URL: ${{ vars.API_URL }}" 
-          echo "Database: ${{ vars.DATABASE_NAME }}" 
-          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
-          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
-          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+          mkdir -p build 
+          echo "Build info" > build/info.txt 
+          echo "Versao: ${{ needs.outputs-entre-steps.outputs.versao }}" >> build/info.txt 
+          echo "Ambient.: ${{ needs.outputs-entre-steps.outputs.ambiente }}" >> build/info.txt 
+          echo "Branch: ${{ github.ref_name }}" >> build/info.txt 
+          echo "Commit: ${{ github.sha }}" >> build/info.txt 
+          echo "Actor; ${{ github.actor }}" >> build/info.txt 
+          cat build/info.txt 
 
-      - name: Deploy em production 
-        run: | 
-          echo "Realitando deploy em ${{ vars.ENVIRONMENT }}" 
-          echo "URL publica: ${{ vars.API_URL }}" 
-          sleep 3 
-          echo "Deploy em PRODUCAO concluido com sucesso!" 
-
-      - name: Notificar equipe 
-        run: | 
-          echo "Enviando notificacao de deploy para ${{ vars.API_URL }}" 
-          echo "Versao implantada: ${{ vars.APP_NAME }} em ${{ vars.ENVIRONMENT }}" 
+      # Upload artefato dinâmico 
+      - name: Upload artefato com nome dinâmico 
+        uses: actions/upload-artifact@v4 
+        with: 
+          name: ${{ format('app-{0}-v{1}-{2}', needs.outputs-entre-steps.outputs.ambiente, needs.outputs-entre-steps.outputs.versao, github.sha) }} 
+          path: build/ 
+          retention-days: 5 

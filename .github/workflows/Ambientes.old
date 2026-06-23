@@ -1,0 +1,94 @@
+name: Deploy Multi-Ambiente 
+
+on: 
+  workflow_dispatch: # Permite execucao manual para testar cada ambiente 
+
+jobs: 
+  # Job 1: Mostra as variaveis de repositorio compartilhadas
+  mostrar-variaveis-repositorio: 
+    runs-on: ubuntu-latest       
+    steps: 
+      - name: Exibir variaveis de repositorio 
+        run: |
+          echo "=== VARIAVEIS DE REPOSITORID ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Timeout padrao: ${{ vars.DEFAULT_TIMEOUT }}" 
+          echo "Versao do Node: ${{ vars.NODE_VERSION }}" 
+
+  # Job 2: Deploy em Desenvolvinento
+  deploy-dev: 
+    runs-on: ubuntu-latest 
+    environment: dev # usa o environnent "dev" 
+    steps: 
+      - name: Configurar anbiente DEV
+        run: | 
+          echo "=== DEPLOY EM DESENVOLVIMENTO ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+
+      - name: Sinular build Para DEV 
+        run: | 
+          echo "Compilando aplicacao para ${{ vars.ENVIRONMENT }}" 
+          echo "URL de destino: ${{ vars.API_URL }}" 
+          sleep 2 
+          echo "Build concluido para DEV" 
+
+  # Job 3: Deploy en Staging 
+  deploy-staging: 
+    runs-on: ubuntu-latest 
+    environment: staging # A usa 0 environnent "staging"  
+    needs: deploy-dev # S6 execute apes deploy-dev 
+    steps: 
+      - name: Configurar anbiente STAGING 
+        run: | 
+          echo "=== DEPLOY EM STAGING ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+
+      - name: Simular testes de integracao 
+        run: | 
+          echo "Executando testes em  ${{ vars.ENVIRONMENT }} " 
+          echo "Endpoint ${{ vars.API_URL }}" 
+          sleep 2 
+          echo "Testes aprovados em STAGING" 
+    
+  # Job 4: Deploy em Producao 
+  deploy-production: 
+    runs-on: ubuntu-latest 
+    environment: production # Usa o environment "production" 
+    needs: deploy-staging # So executa apos deploy-staging      
+
+    steps:
+      - name: Configurar ambiente PRODUCTION 
+        run: | 
+          echo "=== DEPLOY EM PRODUCAO ===" 
+          echo "Aplicacao: ${{ vars.APP_NAME }}" 
+          echo "Ambiente: ${{ vars.ENVIRONMENT }}" 
+          echo "API URL: ${{ vars.API_URL }}" 
+          echo "Database: ${{ vars.DATABASE_NAME }}" 
+          echo "Regiao: ${{ vars.DEFAULT_REGION }}" 
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}" 
+          echo "Max Connections: ${{ vars.MAX_CONNECTIONS }}"
+
+      - name: Deploy em production 
+        run: | 
+          echo "Realitando deploy em ${{ vars.ENVIRONMENT }}" 
+          echo "URL publica: ${{ vars.API_URL }}" 
+          sleep 3 
+          echo "Deploy em PRODUCAO concluido com sucesso!" 
+
+      - name: Notificar equipe 
+        run: | 
+          echo "Enviando notificacao de deploy para ${{ vars.API_URL }}" 
+          echo "Versao implantada: ${{ vars.APP_NAME }} em ${{ vars.ENVIRONMENT }}" 
