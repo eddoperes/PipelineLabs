@@ -87,7 +87,7 @@ jobs:
     # Usa output do lob anterior 
     needs: outputs-entre-steps 
     steps: 
-      - nane: Checkout código 
+      - name: Checkout código 
         uses: actions/checkout@v4
 
       # Funcao contains() — Verifica se string contem texto 
